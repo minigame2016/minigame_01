@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RankSystem {
+public class RankSystem
+{
 
 	private static RankSystem instance=null;
 
@@ -23,4 +24,7 @@ public class RankSystem {
         }
     }
     #endregion
+
+    public int[] RankList = { 80000, 70000, 60000, 50000, 40000 };//没有分数后台赋值为0再传回来
 }
+
