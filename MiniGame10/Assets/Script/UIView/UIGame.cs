@@ -22,26 +22,26 @@ public class UIGame : MonoBehaviour {
     private float timeCount = 0;
 	void Update () {
         //测试计时
-        if(Time.time - timeCount >= 2)
-        {
-            if (_skillOne.active == false)
-            {
-                _skillOne.SetActive(true);
-            }
-            else if (_skillTwo.active == false)
-            {
-                _skillTwo.SetActive(true);
-            }
-            else if (_skillThree.active == false)
-            {
-                _skillThree.SetActive(true);
-            }
-            else if (_skillFour.active == false)
-            {
-                _skillFour.SetActive(true);
-            }
-            timeCount = Time.time;
-        }
+        //if(Time.time - timeCount >= 2)
+        //{
+        //    if (_skillOne.active == false)
+        //    {
+        //        _skillOne.SetActive(true);
+        //    }
+        //    else if (_skillTwo.active == false)
+        //    {
+        //        _skillTwo.SetActive(true);
+        //    }
+        //    else if (_skillThree.active == false)
+        //    {
+        //        _skillThree.SetActive(true);
+        //    }
+        //    else if (_skillFour.active == false)
+        //    {
+        //        _skillFour.SetActive(true);
+        //    }
+        //    timeCount = Time.time;
+        //}
 	}
 
     void FixedUpdate()
@@ -55,6 +55,7 @@ public class UIGame : MonoBehaviour {
         _userName.text = LoginSystem.Instance._userName;
     }
 
+    //技能Demo先不做
     public void OnClickUseSkillBtn()
     {
         Debug.Log("UIGame OnClickUseSkillBtn");
