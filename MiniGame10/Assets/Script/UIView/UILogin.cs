@@ -52,11 +52,11 @@ public class UILogin : MonoBehaviour, IEventListener {
 
     public void AttachEvent()
     {
-        GameEntry.rootEventDispatcher.AttachListenerNow(this, MiniGameEvent.LOGIN_RETURN);
+        GameEventSystem.rootEventDispatcher.AttachListenerNow(this, MiniGameEvent.LOGIN_RETURN);
     }
 
     public void DetachEvent()
     {
-        GameEntry.rootEventDispatcher.DetachListenerNow(this, MiniGameEvent.LOGIN_RETURN);
+        GameEventSystem.rootEventDispatcher.DetachListenerNow(this, MiniGameEvent.LOGIN_RETURN);
     }
 }

@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameEvent : IEvent
+public class GameEventManager : IEvent
 {
     private uint key = 0;
     private object param1 = null;
     private object param2 = null;
 
-    public GameEvent(uint k, object p1, object p2)
+    public GameEventManager(uint k, object p1, object p2)
     {
         key = k;
         param1 = p1;

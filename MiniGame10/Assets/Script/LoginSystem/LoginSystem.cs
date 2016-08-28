@@ -37,7 +37,7 @@ public class LoginSystem
 
     public void LoginResultSC()
     {
-        GameEntry.rootEventDispatcher.FireSynchorEvent(MiniGameEvent.LOGIN_RETURN, _inputUserName, _inputpassWord);
+        GameEventSystem.rootEventDispatcher.FireSynchorEvent(MiniGameEvent.LOGIN_RETURN, _inputUserName, _inputpassWord);
     }
 }
 

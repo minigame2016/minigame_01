@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameEntry
+public class GameEventSystem
 {
 
     public static EventDispatcher rootEventDispatcher = new EventDispatcher();

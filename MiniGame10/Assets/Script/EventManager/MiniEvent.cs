@@ -12,37 +12,14 @@ public interface IEvent
 
 public interface IEventListener
 {
-    /// <summary>
-    /// <returns>拦截事件返回true;继续派发返回false</returns>
-    /// </summary>
     bool OnFireEvent(uint key, object param1, object param2);
 
-    /// <summary>
-    /// priority of this listener to get event with specified eventKey
-    /// the larger the higher
-    /// set before attach
-    /// arrange sequence only happens a single time at Attach
-    /// </summary>
-    /// <param name="eventKey"></param>
-    /// <returns></returns>
     int GetListenerPriority(uint eventKey);
 
-    /// <summary>
-    /// Attachs the event.
-    /// </summary>
     void AttachEvent();
-
-    /// <summary>
-    /// 必须在OnDestroy中销毁消息注册
-    /// </summary>
     void DetachEvent();
 }
 
-
-/// <summary>
-/// 事件派发器
-/// 目前所有的监听对象在派发器中是弱引用，已防止内存泄漏。
-/// </summary>
 public class EventDispatcher
 {
     private Dictionary<uint, List<WeakReference>> m_listenerTable = new Dictionary<uint, List<WeakReference>>();
@@ -80,15 +57,13 @@ public class EventDispatcher
                     if (listener.Target == null) continue;
                 }
                 else
-                { }
-                    //HDebug.Log("key=" + entry.Key.ToString() + ", listener=null");
+                {
+                    Debug.Log("EventDispatcher Print");
+                }
             }
         }
     }
-        
-    /// <summary>
-    /// 交换消息队列
-    /// </summary>
+
     private void SwapNowAndNextEventQueue()
     {
         Queue temp = m_eventQueueNow;
@@ -119,22 +94,14 @@ public class EventDispatcher
         listenerList.Insert(pos, new WeakReference(listener, false));
     }
 
-    /// <summary>
-    /// 非线程安全,只允许在主线程调用
-    /// </summary>
     public void AttachListenerNext(IEventListener listener, uint eventKey)
     {
-        //不需要判断空//
         lock (m_listenersToUpdateCache)
         {
             m_listenersToUpdateCache.Enqueue(new ListenerPack(listener, eventKey, true));
         }
     }
 
-    /// <summary>
-    /// 非线程安全,只允许在主线程调用
-    /// 不允许在IEventListener.HandleEvent 中使用
-    /// </summary>
     public void AttachListenerNow(IEventListener listener, uint eventKey)
     {
 #if EVENT_DEBUG
@@ -142,7 +109,6 @@ public class EventDispatcher
 #endif
         if (null == listener || 0 == eventKey)
         {
-            //SimpleLog.Error("EventDispacher, AttachListenerNow:", " failed due to no listener or event key specified.");
             return;
         }
 
@@ -157,7 +123,7 @@ public class EventDispatcher
         }
         else
         {
-            //SimpleLog.Error("EventDispacher, AttachListenerNow: ", listener.GetType().ToString() + " is already in list for event: " + eventKey.ToString());
+            Debug.Log("EventDispatcher AttachListenerNow");
         }
     }
 
@@ -179,31 +145,19 @@ public class EventDispatcher
         return bHaveContained;
     }
 
-    /// <summary>
-    /// 检查Listernr是否已经注册
-    /// </summary>
-    /// <returns></returns>
     public bool ListenerAttached(IEventListener listener, uint eventKey)
     {
         return m_listenerTable.ContainsKey(eventKey);
     }
 
-    /// <summary>
-    /// 非线程安全,只允许在主线程调用
-    /// </summary>
     public void DetachListenerNext(IEventListener listener, uint eventKey)
     {
-        //不需要判断空//
         lock (m_listenersToUpdateCache)
         {
             m_listenersToUpdateCache.Enqueue(new ListenerPack(listener, eventKey, false));
         }
     }
 
-    /// <summary>
-    /// 非线程安全,只允许在主线程调用
-    /// 不允许在IEventListener.HandleEvent 中使用
-    /// </summary>
     public void DetachListenerNow(IEventListener listener, uint eventKey)
     {
 #if EVENT_DEBUG
@@ -211,7 +165,7 @@ public class EventDispatcher
 #endif
         if (0 == eventKey)
         {
-            //HDebug.LogError("EventDispacher, DetachListenerNow: failed due to no listener or event key specified.");
+            Debug.LogError("EventDispatcher DetachListenerNow");
             return;
         }
         if (!m_listenerTable.ContainsKey(eventKey))
@@ -223,7 +177,7 @@ public class EventDispatcher
         {
             if (listenerRef.Target == listener)
             {
-                listenerRef.Target = null;  // 
+                listenerRef.Target = null;
                 if (!m_DelingEventArray.Contains(eventKey))
                     m_DelingEventArray.Add(eventKey);
                 break;
@@ -231,9 +185,6 @@ public class EventDispatcher
         }
     }
 
-    /// <summary>
-    /// 每个EventDispatcher会在DispatchEvent开始的时候更新自己的ListenerMap
-    /// </summary>
     private void UpdateListenerMap()
     {
         if (m_DelingEventArray.Count > 0)
@@ -294,7 +245,6 @@ public class EventDispatcher
 #if UNITY_EDITOR
                 if (listener.OnFireEvent(key, param1, param2))
 			{
-				//一条消息要求有多人接收，这里直接返回的话，只有第一个注册的人能收到消息//
 				//return true; //Event consumed.
 			}
 #else
@@ -334,53 +284,34 @@ public class EventDispatcher
 
     private void DispatchEvent()
     {
-        //c#的lock允许同一线程多次进入//
         lock (m_evtQueueLock)
         {
-            //发布自己的event
             while (m_eventQueueNow.Count > 0)
             {
                 IEvent evt = m_eventQueueNow.Dequeue() as IEvent;
                 _DispatchEvent(evt);
             }
         }
-            
-        //交换event缓冲//
         lock (m_evtQueueLock)
         {
             SwapNowAndNextEventQueue();
         }
     }
 
-    /// <summary>
-    /// 更新逻辑核层级挂接
-    /// </summary>
-    //private float mLastUpdateTime = 0.0f;
-    //static private float msUpdateInternal = 10.0f;
     public void Update()
     {
         UpdateListenerMap();
         DispatchEvent();
     }
 
-    /// <summary>
-    /// 线程安全,允许多线程调用，下帧抛出
-    /// </summary>
     public void FireAsynchorEvent(uint key, object param1, object param2)
     {
         lock (m_evtQueueLock)
         {
-            m_eventQueueNext.Enqueue(new GameEvent(key, param1, param2));
+            m_eventQueueNext.Enqueue(new GameEventManager(key, param1, param2));
         }
     }
 
-    /// <summary>
-    /// 立刻抛出事件
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="param1"></param>
-    /// <param name="param2"></param>
-    /// <returns>事件是否被监听者拦截</returns>
     public bool FireSynchorEvent(uint key, object param1, object param2)
     {
         bool ret = false;
