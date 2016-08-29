@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameSystem {
+public class GameSystem{
 
 	private static GameSystem instance = null;
 
@@ -24,5 +24,14 @@ public class GameSystem {
     }
     #endregion
 
+    ArrayList PlayerClickItemList = new ArrayList();
 
+    public void AddPlayerClickItemList(string itemName)
+    {
+        PlayerClickItemList.Add(itemName);
+        Debug.Log("GameSystem AddPlayerClickItemList " + itemName);
+    }
+
+    public double Item_1001_V_Speed = 0.1;
+    public double Item_1001_H_Speed = 0.1;
 }

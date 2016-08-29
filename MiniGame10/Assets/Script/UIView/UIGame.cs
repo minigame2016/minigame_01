@@ -21,27 +21,7 @@ public class UIGame : MonoBehaviour {
 	// Update is called once per frame
     private float timeCount = 0;
 	void Update () {
-        //测试计时
-        //if(Time.time - timeCount >= 2)
-        //{
-        //    if (_skillOne.active == false)
-        //    {
-        //        _skillOne.SetActive(true);
-        //    }
-        //    else if (_skillTwo.active == false)
-        //    {
-        //        _skillTwo.SetActive(true);
-        //    }
-        //    else if (_skillThree.active == false)
-        //    {
-        //        _skillThree.SetActive(true);
-        //    }
-        //    else if (_skillFour.active == false)
-        //    {
-        //        _skillFour.SetActive(true);
-        //    }
-        //    timeCount = Time.time;
-        //}
+        
 	}
 
     void FixedUpdate()
