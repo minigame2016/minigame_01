@@ -51,12 +51,6 @@ public class UIMainPage : MonoBehaviour {
         _rankPanel.SetActive(false);
     }
 
-    public void OnClickQuitGameBtn()
-    {
-        Debug.Log("UIMainPage OnClickQuitGameBtn Quit");
-        Application.Quit();
-    }
-
     private void SetRankItem()
     {
         int [] rankList = RankSystem.Instance.RankList;

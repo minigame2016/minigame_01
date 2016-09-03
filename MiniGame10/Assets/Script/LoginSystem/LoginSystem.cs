@@ -32,7 +32,7 @@ public class LoginSystem
 
     public void SendMessage(string[] sendMsg)
     {
-        NetWork.Instance.SendMsg(sendMsg);
+        NetWork.Instance.SendLoginMsg(sendMsg);
     }
 
     public void LoginResultSC()

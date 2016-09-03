@@ -27,5 +27,7 @@ public class XMLManager
 
     public ArrayList _ruleList = new ArrayList();
 
+    public ArrayList _speedList = new ArrayList();
+
     
 }

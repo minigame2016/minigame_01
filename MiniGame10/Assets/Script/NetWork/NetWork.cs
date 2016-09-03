@@ -25,7 +25,7 @@ public class NetWork {
     }
     #endregion
 
-    public void SendMsg(string[] sendMsg)
+    public void SendLoginMsg(string[] sendMsg)
     {
         Debug.Log("NetWork Send " + sendMsg[0] + " " + sendMsg[1]);
         this.LoginResultSC();
@@ -34,5 +34,10 @@ public class NetWork {
     public void LoginResultSC()
     {
         LoginSystem.Instance.LoginResultSC();
+    }
+
+    public void SendResultMsg(string totalGrade)
+    {
+        Debug.Log("NetWork SendResultMsg TotalGrade:" + totalGrade);
     }
 }
