@@ -30,6 +30,6 @@ public class RankSystem
         NetWork.Instance.GetRankListCS();
     }
 
-    public int[] RankList = { 80000, 70000, 60000, 50000, 40000 };//没有分数后台赋值为0再传回来
+    public int[] RankList = { 0, 0, 0, 0, 0 };//没有分数后台赋值为0再传回来
 }
 

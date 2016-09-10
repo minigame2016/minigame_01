@@ -6,6 +6,8 @@ public class UILogin : MonoBehaviour, IEventListener {
     public UIInput _userName;
     public UIInput _passWord;
 
+    public UILabel _tipsShow;
+
     void OnEnable()
     {
         AttachEvent();
@@ -13,6 +15,28 @@ public class UILogin : MonoBehaviour, IEventListener {
     void OnDisable()
     {
         DetachEvent();
+    }
+
+    void Update()
+    {
+        if (NetWork.Instance._isLoginFailedCall)
+        {
+            _tipsShow.text = "登录失败";
+            NetWork.Instance._isLoginFailedCall = false;
+        }
+
+        if (NetWork.Instance._isRegisterFailedCall)
+        {
+            _tipsShow.text = "注册失败，重新注册";
+            NetWork.Instance._isRegisterFailedCall = false;
+        }
+
+        if (NetWork.Instance._isRegisterSuccessCall)
+        {
+            _tipsShow.text = "注册成功，请登录";
+            NetWork.Instance._isRegisterSuccessCall = false;
+        }
+        
     }
 
     public void OnClickLoginBtn()//登陆成功后自动拉取排行榜
@@ -30,6 +54,16 @@ public class UILogin : MonoBehaviour, IEventListener {
         loginMsg[1] = password;
 
         LoginSystem.Instance.SendMessage(loginMsg);
+    }
+
+    public void OnClickRegisterBtn()
+    {
+        string username_rig = _userName.value;
+        string password_rig = _passWord.value;
+
+        Debug.Log("UILogin OnClickRegisterBtn " + username_rig + " " + password_rig);
+
+        LoginSystem.Instance.RegsiterUser(username_rig, password_rig);
     }
 
     public bool OnFireEvent(uint key, object param1, object param2)

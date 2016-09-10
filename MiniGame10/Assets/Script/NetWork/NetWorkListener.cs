@@ -19,5 +19,11 @@ public class NetWorkListener : MonoBehaviour {
             NetWork.Instance.LoginResultSC();
             NetWork.Instance._isLoginCall = false;
         }
+
+        if(NetWork.Instance._isRankListFinish)
+        {
+            NetWork.Instance.SaveRankListInfo();
+            NetWork.Instance._isRankListFinish = false;
+        }
 	}
 }

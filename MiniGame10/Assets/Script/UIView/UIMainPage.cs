@@ -12,6 +12,15 @@ public class UIMainPage : MonoBehaviour {
 
     public UILabel _userName;
 
+    void Update()
+    {
+        if (NetWork.Instance._isRankListFinish)
+        {
+            NetWork.Instance.SaveRankListInfo();
+            NetWork.Instance._isRankListFinish = false;
+        }
+    }
+
     void OnEnable()
     {   
         //测试带数据
@@ -42,6 +51,7 @@ public class UIMainPage : MonoBehaviour {
         _rankPanel.SetActive(true);
 
         //请求排行榜 TODO
+        RankSystem.Instance.GetRankList();
         //给Label赋值
         SetRankItem();
     }

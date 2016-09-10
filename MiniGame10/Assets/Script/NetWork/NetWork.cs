@@ -3,6 +3,7 @@ using System.Collections;
 using AVOSCloud;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+
 public class NetWork {
     //TODO NetWork
 
@@ -28,6 +29,14 @@ public class NetWork {
     #endregion
 
     public bool _isLoginCall = false;
+    public bool _isLoginFailedCall = false;
+
+    public bool _isRegisterSuccessCall = false;
+    public bool _isRegisterFailedCall = false;
+
+    public bool _isRankListFinish = false;
+
+    public List<int> rankListTemp = new List<int>();
 
     public void SendLoginMsg(string[] sendMsg)
     {
@@ -36,19 +45,39 @@ public class NetWork {
         {
             if (t.IsFaulted || t.IsCanceled)
             {
-                //System.AggregateException msg2 = t.Exception; // 登录失败，可以查看错误信息。
-                //msg2 = "登录失败";
-                //Debug.Log("NetWork Send " + msg2.Message);
                 Debug.Log("NetWork Send failed");
+                _isLoginFailedCall = true;
             }
             else
             {
-                //msg2 = "登陆成功";//登录成功
                 Debug.Log("NetWork Send 1111登陆成功");
                 _isLoginCall = true;
-                //this.LoginResultSC();
             }
         }); 
+    }
+
+    public void RegisterUserCS(string username_rig, string pwd_rig)
+    {
+        //注册代码
+        var user = new AVUser();
+        user.Username = username_rig;
+        user.Password = pwd_rig;
+
+        user.SignUpAsync().ContinueWith(t =>
+        {
+            if (!t.IsFaulted)
+            {
+                Debug.Log("NetWork RegisterUserCS 注册成功");
+                var uid = user.ObjectId;
+                _isRegisterSuccessCall = true;
+            }
+            else
+            {
+                Debug.Log("NetWork RegisterUserCS 注册失败");
+                _isRegisterFailedCall = true;
+            }
+
+        });
     }
 
     public void LoginResultSC()
@@ -60,60 +89,49 @@ public class NetWork {
     {
         //填写拉取排行榜数据Code
         //TODO
+        AVObject gameScore = new AVObject("GameScore");
+        AVQuery<AVObject> query = AVObject.GetQuery("GameScore");
+        query = query.WhereContains("playerName",LoginSystem.Instance._inputUserName).OrderByDescending("score");
+        query.FindAsync().ContinueWith(t =>
+        {
+            Task task = Task.FromResult(0);
+            int cnt = 0;
+            List<int> list_score = new List<int>();
 
+            foreach (AVObject result in t.Result)
+            {
+                gameScore = result;
+                if (cnt < 5)
+                {
+                    cnt = cnt + 1;
+                    list_score.Add(gameScore.Get<int>("score"));
+                }
+            }
+            Debug.Log("NetWork SendResultMsg get rank.");
+            
+            rankListTemp = list_score;
+            _isRankListFinish = true;
+        });
 
         //返回数据存储到 RankSystem 中的RankList中，没有的数据需要传回0
     }
 
+    public void SaveRankListInfo()
+    {
+        RankSystem.Instance.RankList = rankListTemp.ToArray();
+    }
+
     public void SendResultMsg(string username, string totalGrade)
     {
-        Debug.Log("NetWork SendResultMsg save grade");
+        Debug.Log("NetWork SendResultMsg save grade.");
         AVObject gameScore = new AVObject("GameScore");
 
         string newplayername = username;
         int newscore = int.Parse(totalGrade);
         
-
         gameScore["score"] = newscore;
         gameScore["playerName"] = newplayername;
-
-       
-        AVQuery<AVObject> query = new AVQuery<AVObject>("GameScore").WhereEqualTo("playerName", newplayername);
-
-        query.CountAsync().ContinueWith(t =>
-        {
-            int count = t.Result;
-            if (count >= 1)
-            {
-                Debug.Log("已经有了");
-                query.FindAsync().ContinueWith(t1 =>
-                {
-                    Task task = Task.FromResult(0);
-                    int cnt = 0;
-                    foreach (AVObject result in t1.Result)
-                    {
-                        cnt = cnt + 1;
-                        gameScore = result;
-                        int val = gameScore.Get<int>("score");
-                        if (val < newscore)
-                            gameScore["score"] = newscore;
-                        // 针对每一个AVObject,task都去调用SaveAsync这个方法。
-                        task = task.ContinueWith(_ =>
-                        {
-                            // 返回一个Task。当保存完毕之后这个Task就会标记为完成。
-                            return gameScore.SaveAsync();
-                        });
-                    };
-                    Debug.Log("NetWork SendResultMsg Username 录入成功 TotalGrade:" + username + "   " + totalGrade);
-                });
-            }
-            else
-            {
-                Debug.Log("第一次出现");
-                gameScore.SaveAsync();
-            }
-
-        });
-        
+        gameScore.SaveAsync();
+                    
     }
 }

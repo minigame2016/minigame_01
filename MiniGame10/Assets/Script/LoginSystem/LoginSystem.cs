@@ -35,6 +35,11 @@ public class LoginSystem
         NetWork.Instance.SendLoginMsg(sendMsg);
     }
 
+    public void RegsiterUser(string username_rig, string psd_rig)
+    {
+        NetWork.Instance.RegisterUserCS(username_rig, psd_rig);
+    }
+
     public void LoginResultSC()
     {
         GameEventSystem.rootEventDispatcher.FireSynchorEvent(MiniGameEvent.LOGIN_RETURN, _inputUserName, _inputpassWord);
