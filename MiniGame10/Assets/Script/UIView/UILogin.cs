@@ -40,6 +40,9 @@ public class UILogin : MonoBehaviour, IEventListener {
             LoginSystem.Instance._userName = (string)param1;
             LoginSystem.Instance._passWord = (string)param2;
             Application.LoadLevel("MainScene");
+
+            //拉排行榜数据
+            RankSystem.Instance.GetRankList();
         }
 
         return true;

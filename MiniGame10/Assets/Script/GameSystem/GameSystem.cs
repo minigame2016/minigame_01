@@ -82,7 +82,8 @@ public class GameSystem{
 
     public void SendResult(int totalGrade)
     {
-        NetWork.Instance.SendResultMsg(totalGrade.ToString());
+        string username = LoginSystem.Instance._inputUserName;
+        NetWork.Instance.SendResultMsg(username, totalGrade.ToString());
     }
 
     #region Item V H

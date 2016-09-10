@@ -44,6 +44,7 @@ public class UIGame : MonoBehaviour {
 
     public void GoInGameOver()
     {
+        GameSystem.Instance.isGameGoOn = true;
         _GameOverPanel.SetActive(true);
         _resultPanelGrade.text = GameSystem.Instance.totalGrade.ToString();
         Time.timeScale = 0;
