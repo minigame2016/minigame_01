@@ -25,11 +25,16 @@ public class RankSystem
     }
     #endregion
 
-    public void GetRankList()
+    public int[] RankList = { 0, 0, 0, 0, 0 };//没有分数显示0
+
+    public void SendGetRankListMsg()
     {
-        NetWork.Instance.GetRankListCS();
+        NetWork.Instance.SendGetRankListMsgCS();
     }
 
-    public int[] RankList = { 0, 0, 0, 0, 0 };//没有分数后台赋值为0再传回来
+    public void GetRankListResut()
+    {
+        GameEventSystem.rootEventDispatcher.FireSynchorEvent(MiniGameEvent.GET_RANK, null, null);
+    }
 }
 

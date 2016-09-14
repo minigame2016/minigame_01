@@ -3,22 +3,23 @@ using System.Collections;
 
 public class UIGame : MonoBehaviour {
 
-    public GameObject _PausePanel;
-    public GameObject _GameOverPanel;
+    public GameObject _pausePanel;
+    public GameObject _gameOverPanel;
     
     public UILabel _userName;
 
     public UILabel _grande;
     public UILabel _resultPanelGrade;
 
-	// Use this for initialization
-	void Start () {
+    void Awake()
+    {
         //进行游戏初始化，所有数据进入初始状态
         GameSystem.Instance.ResetGameMessage();
+    }
+	void Start () {
+        
 	}
 	
-	// Update is called once per frame
-    private float timeCount = 0;
 	void Update () {
         if(!GameSystem.Instance.isPauseState)//非暂停状态下
         {
@@ -45,14 +46,14 @@ public class UIGame : MonoBehaviour {
     public void GoInGameOver()
     {
         GameSystem.Instance.isGameGoOn = true;
-        _GameOverPanel.SetActive(true);
+        _gameOverPanel.SetActive(true);
         _resultPanelGrade.text = GameSystem.Instance.totalGrade.ToString();
         Time.timeScale = 0;
     }
 
     public void OnClickPauseBtn()
     {
-        _PausePanel.SetActive(true);
+        _pausePanel.SetActive(true);
 
         //暂停游戏等操作
         GameSystem.Instance.isPauseState = true;
@@ -60,7 +61,7 @@ public class UIGame : MonoBehaviour {
 
     public void OnClickReturnGameBtn()
     {
-        _PausePanel.SetActive(false);
+        _pausePanel.SetActive(false);
 
         //继续游戏等操作
         Time.timeScale = 1;

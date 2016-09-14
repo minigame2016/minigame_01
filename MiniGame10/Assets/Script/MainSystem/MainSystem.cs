@@ -23,6 +23,8 @@ public class MainSystem {
     }
     #endregion
 
+    public bool isOpenNetWork = false;
+
     public void GameStart()
     {
         Application.LoadLevel("GameScene");

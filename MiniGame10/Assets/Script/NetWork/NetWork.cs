@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 
 public class NetWork {
-    //TODO NetWork
 
     private static NetWork instance=null;
 
@@ -28,7 +27,7 @@ public class NetWork {
     }
     #endregion
 
-    public bool _isLoginCall = false;
+    public bool _isLoginSuccessCall = false;
     public bool _isLoginFailedCall = false;
 
     public bool _isRegisterSuccessCall = false;
@@ -38,100 +37,133 @@ public class NetWork {
 
     public List<int> rankListTemp = new List<int>();
 
-    public void SendLoginMsg(string[] sendMsg)
-    {
-        Debug.Log("NetWork Send " + sendMsg[0] + " " + sendMsg[1]);
-        AVUser.LogInAsync(sendMsg[0], sendMsg[1]).ContinueWith(t =>
+    #region 登录
+    public void SendLoginMsgCS(string userName, string passWord)
+    {   
+        if(MainSystem.Instance.isOpenNetWork)
         {
-            if (t.IsFaulted || t.IsCanceled)
+            Debug.Log("NetWork Send " + userName + " " + passWord);
+            AVUser.LogInAsync(userName, passWord).ContinueWith(t =>
             {
-                Debug.Log("NetWork Send failed");
-                _isLoginFailedCall = true;
-            }
-            else
-            {
-                Debug.Log("NetWork Send 1111登陆成功");
-                _isLoginCall = true;
-            }
-        }); 
-    }
-
-    public void RegisterUserCS(string username_rig, string pwd_rig)
-    {
-        //注册代码
-        var user = new AVUser();
-        user.Username = username_rig;
-        user.Password = pwd_rig;
-
-        user.SignUpAsync().ContinueWith(t =>
+                if (t.IsFaulted || t.IsCanceled)
+                {
+                    Debug.Log("NetWork Send failed");
+                    _isLoginFailedCall = true;
+                }
+                else
+                {
+                    Debug.Log("NetWork Send 1111登陆成功");
+                    _isLoginSuccessCall = true;
+                }
+            }); 
+        }
+        else
         {
-            if (!t.IsFaulted)
-            {
-                Debug.Log("NetWork RegisterUserCS 注册成功");
-                var uid = user.ObjectId;
-                _isRegisterSuccessCall = true;
-            }
-            else
-            {
-                Debug.Log("NetWork RegisterUserCS 注册失败");
-                _isRegisterFailedCall = true;
-            }
-
-        });
+            _isLoginSuccessCall = true;
+        }
+        
     }
 
     public void LoginResultSC()
     {
-        LoginSystem.Instance.LoginResultSC();
+        LoginSystem.Instance.LoginResult();
     }
+    #endregion
 
-    public void GetRankListCS()
+    #region 注册
+    public void SendRegsiterMsgCS(string userName, string passWord)
     {
-        //填写拉取排行榜数据Code
-        //TODO
-        AVObject gameScore = new AVObject("GameScore");
-        AVQuery<AVObject> query = AVObject.GetQuery("GameScore");
-        query = query.WhereContains("playerName",LoginSystem.Instance._inputUserName).OrderByDescending("score");
-        query.FindAsync().ContinueWith(t =>
+        if (MainSystem.Instance.isOpenNetWork)
         {
-            Task task = Task.FromResult(0);
-            int cnt = 0;
-            List<int> list_score = new List<int>();
+            var user = new AVUser();
+            user.Username = userName;
+            user.Password = passWord;
 
-            foreach (AVObject result in t.Result)
+            user.SignUpAsync().ContinueWith(t =>
             {
-                gameScore = result;
-                if (cnt < 5)
+                if (!t.IsFaulted)
                 {
-                    cnt = cnt + 1;
-                    list_score.Add(gameScore.Get<int>("score"));
+                    Debug.Log("NetWork SendRegsiterMsgCS 注册成功");
+                    var uid = user.ObjectId;
+                    _isRegisterSuccessCall = true;
                 }
-            }
-            Debug.Log("NetWork SendResultMsg get rank.");
-            
-            rankListTemp = list_score;
-            _isRankListFinish = true;
-        });
+                else
+                {
+                    Debug.Log("NetWork SendRegsiterMsgCS 注册失败");
+                    _isRegisterFailedCall = true;
+                }
 
-        //返回数据存储到 RankSystem 中的RankList中，没有的数据需要传回0
+            });
+        }
+        else
+        {
+            _isRegisterFailedCall = true;
+        }
+        
+    }
+    #endregion
+
+    #region 拉排行榜数据
+    public void SendGetRankListMsgCS()
+    {
+        if (MainSystem.Instance.isOpenNetWork)
+        {
+            string userName = LoginSystem.Instance._userName;
+            AVObject gameScore = new AVObject("GameScore");
+            AVQuery<AVObject> query = AVObject.GetQuery("GameScore");
+            query = query.WhereContains("playerName", userName).OrderByDescending("score");
+            query.FindAsync().ContinueWith(t =>
+            {
+                Task task = Task.FromResult(0);
+                int cnt = 0;
+                List<int> list_score = new List<int>();
+
+                foreach (AVObject result in t.Result)
+                {
+                    gameScore = result;
+                    if (cnt < 5)
+                    {
+                        cnt = cnt + 1;
+                        list_score.Add(gameScore.Get<int>("score"));
+                    }
+                }
+                Debug.Log("NetWork SendResultMsg get rank.");
+
+                rankListTemp = list_score;
+                _isRankListFinish = true;
+            });
+        }
+        else
+        {
+            _isRankListFinish = true;
+            rankListTemp.Clear();
+            rankListTemp.Add(111); rankListTemp.Add(222);
+        }
+        
     }
 
-    public void SaveRankListInfo()
+    public void SaveRankListInfoSC()
     {
         RankSystem.Instance.RankList = rankListTemp.ToArray();
+        RankSystem.Instance.GetRankListResut();
     }
+    #endregion
 
+    #region 结算上报
     public void SendResultMsg(string username, string totalGrade)
     {
-        Debug.Log("NetWork SendResultMsg save grade.");
-        AVObject gameScore = new AVObject("GameScore");
+        if (MainSystem.Instance.isOpenNetWork)
+        {
+            Debug.Log("NetWork SendResultMsg save grade.");
+            AVObject gameScore = new AVObject("GameScore");
 
-        string newplayername = username;
-        int newscore = int.Parse(totalGrade);
-        
-        gameScore["score"] = newscore;
-        gameScore["playerName"] = newplayername;
-        gameScore.SaveAsync();
-                    
+            string playerName = username;
+            int playerScore = int.Parse(totalGrade);
+
+            gameScore["playerName"] = playerName;
+            gameScore["score"] = playerScore;
+            gameScore.SaveAsync();
+        }
     }
+    #endregion
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UIMainPage : MonoBehaviour {
+public class UIMainPage : MonoBehaviour, IEventListener{
 
     public GameObject _rulePanel;
     public GameObject _rankPanel;
@@ -12,20 +12,22 @@ public class UIMainPage : MonoBehaviour {
 
     public UILabel _userName;
 
-    void Update()
-    {
-        if (NetWork.Instance._isRankListFinish)
-        {
-            NetWork.Instance.SaveRankListInfo();
-            NetWork.Instance._isRankListFinish = false;
-        }
-    }
-
     void OnEnable()
-    {   
+    {
+        AttachEvent();
         //测试带数据
         _userName.text = LoginSystem.Instance._userName;
     }
+    void OnDisable()
+    {
+        DetachEvent();
+    }
+
+    void Update()
+    {
+        NetWorkListerer();
+    }
+
     public void OnClickGameStartBtn()
     {
         Debug.Log("UIMainPage OnClickGameStartBtn");
@@ -50,10 +52,8 @@ public class UIMainPage : MonoBehaviour {
         Debug.Log("UIMainPage OnClickRankBtn");
         _rankPanel.SetActive(true);
 
-        //请求排行榜 TODO
-        RankSystem.Instance.GetRankList();
-        //给Label赋值
-        SetRankItem();
+        //请求排行榜
+        RankSystem.Instance.SendGetRankListMsg();
     }
 
     public void OnClickCloseRankBtn()
@@ -75,5 +75,40 @@ public class UIMainPage : MonoBehaviour {
         ArrayList ruleList = XMLManager.Instance._ruleList;
         RuleData ruleData = (RuleData)ruleList[1];
         _ruleLabel.text = ruleData.rule;
+    }
+
+    private void NetWorkListerer()
+    {
+        if (NetWork.Instance._isRankListFinish)
+        {
+            NetWork.Instance.SaveRankListInfoSC();
+            NetWork.Instance._isRankListFinish = false;
+        }
+    }
+
+    public bool OnFireEvent(uint key, object param1, object param2)
+    {
+        if (key == MiniGameEvent.GET_RANK)
+        {
+            //给Label赋值
+            SetRankItem();
+        }
+
+        return true;
+    }
+
+    public int GetListenerPriority(uint eventKey)
+    {
+        return 0;
+    }
+
+    public void AttachEvent()
+    {
+        GameEventSystem.rootEventDispatcher.AttachListenerNow(this, MiniGameEvent.GET_RANK);
+    }
+
+    public void DetachEvent()
+    {
+        GameEventSystem.rootEventDispatcher.DetachListenerNow(this, MiniGameEvent.GET_RANK);
     }
 }

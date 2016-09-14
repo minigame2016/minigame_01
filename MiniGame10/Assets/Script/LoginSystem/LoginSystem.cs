@@ -5,12 +5,6 @@ public class LoginSystem
 {
     private static LoginSystem instance = null;
 
-    public string _userName = null;
-    public string _passWord = null;
-
-    public string _inputUserName = null;
-    public string _inputpassWord = null;
-
     #region 单例模式抽象出来（优化）
     private LoginSystem()
     {
@@ -30,19 +24,22 @@ public class LoginSystem
     }
     #endregion
 
-    public void SendMessage(string[] sendMsg)
+    public string _userName = null;
+    public string _passWord = null;
+
+    public void SendLoginMsg(string userName, string passWord)
     {
-        NetWork.Instance.SendLoginMsg(sendMsg);
+        NetWork.Instance.SendLoginMsgCS(userName, passWord);
     }
 
-    public void RegsiterUser(string username_rig, string psd_rig)
+    public void SendRegsiterMsg(string userName, string passWord)
     {
-        NetWork.Instance.RegisterUserCS(username_rig, psd_rig);
+        NetWork.Instance.SendRegsiterMsgCS(userName, passWord);
     }
 
-    public void LoginResultSC()
+    public void LoginResult()
     {
-        GameEventSystem.rootEventDispatcher.FireSynchorEvent(MiniGameEvent.LOGIN_RETURN, _inputUserName, _inputpassWord);
+        GameEventSystem.rootEventDispatcher.FireSynchorEvent(MiniGameEvent.LOGIN_RETURN, null, null);
     }
 }
 

@@ -19,6 +19,40 @@ public class UILogin : MonoBehaviour, IEventListener {
 
     void Update()
     {
+        NetWorkListerer();
+    }
+
+    public void OnClickLoginBtn()
+    {
+        string userName = _userName.value;
+        string passWord = _passWord.value;
+
+        LoginSystem.Instance._userName = userName;
+        LoginSystem.Instance._passWord = passWord;
+
+        Debug.Log("UILogin OnClickLoginBtn " + userName + " " + passWord);
+
+        LoginSystem.Instance.SendLoginMsg(userName, passWord);
+    }
+
+    public void OnClickRegisterBtn()
+    {
+        string userName = _userName.value;
+        string passWord = _passWord.value;
+
+        Debug.Log("UILogin OnClickRegisterBtn " + userName + " " + passWord);
+
+        LoginSystem.Instance.SendRegsiterMsg(userName, passWord);
+    }
+
+    private void NetWorkListerer()
+    {
+        if (NetWork.Instance._isLoginSuccessCall)
+        {
+            NetWork.Instance.LoginResultSC();
+            NetWork.Instance._isLoginSuccessCall = false;
+        }
+
         if (NetWork.Instance._isLoginFailedCall)
         {
             _tipsShow.text = "登录失败";
@@ -36,47 +70,14 @@ public class UILogin : MonoBehaviour, IEventListener {
             _tipsShow.text = "注册成功，请登录";
             NetWork.Instance._isRegisterSuccessCall = false;
         }
-        
-    }
-
-    public void OnClickLoginBtn()//登陆成功后自动拉取排行榜
-    {
-        string username = _userName.value;
-        string password = _passWord.value;
-
-        //临时测试
-        LoginSystem.Instance._inputUserName = username;
-        LoginSystem.Instance._inputpassWord = password;
-
-        Debug.Log("UILogin OnClickLoginBtn " + username + " " + password);
-        string[] loginMsg = new string[2];
-        loginMsg[0] = username;
-        loginMsg[1] = password;
-
-        LoginSystem.Instance.SendMessage(loginMsg);
-    }
-
-    public void OnClickRegisterBtn()
-    {
-        string username_rig = _userName.value;
-        string password_rig = _passWord.value;
-
-        Debug.Log("UILogin OnClickRegisterBtn " + username_rig + " " + password_rig);
-
-        LoginSystem.Instance.RegsiterUser(username_rig, password_rig);
     }
 
     public bool OnFireEvent(uint key, object param1, object param2)
     {
         if (key == MiniGameEvent.LOGIN_RETURN)
         {
-            Debug.Log("UILogin OnFireEvent ");
-            LoginSystem.Instance._userName = (string)param1;
-            LoginSystem.Instance._passWord = (string)param2;
+            Debug.Log("UILogin OnFireEvent");
             Application.LoadLevel("MainScene");
-
-            //拉排行榜数据
-            RankSystem.Instance.GetRankList();
         }
 
         return true;
