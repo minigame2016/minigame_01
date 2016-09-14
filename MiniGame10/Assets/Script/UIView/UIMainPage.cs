@@ -3,6 +3,9 @@ using System.Collections;
 
 public class UIMainPage : MonoBehaviour, IEventListener{
 
+    public AudioClip _anniu;
+    private AudioSource _audioSource;
+
     public GameObject _rulePanel;
     public GameObject _rankPanel;
 
@@ -11,6 +14,13 @@ public class UIMainPage : MonoBehaviour, IEventListener{
     public UILabel[] rank;
 
     public UILabel _userName;
+
+    public delegate void AudioCallBack();
+
+    void Start()
+    {
+        _audioSource = this.GetComponent<AudioSource>();
+    }
 
     void OnEnable()
     {
@@ -28,7 +38,24 @@ public class UIMainPage : MonoBehaviour, IEventListener{
         NetWorkListerer();
     }
 
+    public void PlayClipData(AudioCallBack callback)
+    {
+        _audioSource.PlayOneShot(_anniu);
+        StartCoroutine(DelayedCallback(1, callback));
+    }
+
+    private IEnumerator DelayedCallback(float time, AudioCallBack callback)
+    {
+        yield return new WaitForSeconds(time);
+        callback();
+    }
+
     public void OnClickGameStartBtn()
+    {
+        PlayClipData(OnClickGameStartBtnCallback);
+    }
+
+    private void OnClickGameStartBtnCallback()
     {
         Debug.Log("UIMainPage OnClickGameStartBtn");
         MainSystem.Instance.GameStart();
@@ -36,6 +63,8 @@ public class UIMainPage : MonoBehaviour, IEventListener{
 
     public void OnClickRuleBtn()
     {
+        _audioSource.PlayOneShot(_anniu);
+
         Debug.Log("UIMainPage OnClickRuleBtn");
         _rulePanel.SetActive(true);
 
@@ -44,11 +73,15 @@ public class UIMainPage : MonoBehaviour, IEventListener{
 
     public void OnClickCloseRuleBtn()
     {
+        _audioSource.PlayOneShot(_anniu);
+
         _rulePanel.SetActive(false);
     }
 
     public void OnClickRankBtn()
     {
+        _audioSource.PlayOneShot(_anniu);
+
         Debug.Log("UIMainPage OnClickRankBtn");
         _rankPanel.SetActive(true);
 
@@ -58,7 +91,15 @@ public class UIMainPage : MonoBehaviour, IEventListener{
 
     public void OnClickCloseRankBtn()
     {
+        _audioSource.PlayOneShot(_anniu);
+
         _rankPanel.SetActive(false);
+    }
+
+    public void OnClickQuitBtn()
+    {
+        Debug.Log("UILogin OnClickQuitBtn ");
+        UnityEngine.Application.Quit();
     }
 
     private void SetRankItem()

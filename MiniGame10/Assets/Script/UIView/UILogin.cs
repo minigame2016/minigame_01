@@ -3,10 +3,20 @@ using System.Collections;
 
 public class UILogin : MonoBehaviour, IEventListener {
 
+    public AudioClip _anniu;
+    private AudioSource _audioSource;
+
     public UIInput _userName;
     public UIInput _passWord;
 
     public UILabel _tipsShow;
+
+    public delegate void AudioCallBack();
+
+    void Start()
+    {
+        _audioSource = this.GetComponent<AudioSource>();
+    }
 
     void OnEnable()
     {
@@ -22,7 +32,24 @@ public class UILogin : MonoBehaviour, IEventListener {
         NetWorkListerer();
     }
 
+    public void PlayClipData(AudioCallBack callback)
+    {
+        _audioSource.PlayOneShot(_anniu);
+        StartCoroutine(DelayedCallback(1, callback));
+    }
+
+    private IEnumerator DelayedCallback(float time, AudioCallBack callback)
+    {
+        yield return new WaitForSeconds(time);
+        callback();
+    }
+
     public void OnClickLoginBtn()
+    {
+        PlayClipData(OnClickLoginBtnCallback);
+    }
+
+    private void OnClickLoginBtnCallback()
     {
         string userName = _userName.value;
         string passWord = _passWord.value;
@@ -37,12 +64,20 @@ public class UILogin : MonoBehaviour, IEventListener {
 
     public void OnClickRegisterBtn()
     {
+        _audioSource.PlayOneShot(_anniu);
+
         string userName = _userName.value;
         string passWord = _passWord.value;
 
         Debug.Log("UILogin OnClickRegisterBtn " + userName + " " + passWord);
 
         LoginSystem.Instance.SendRegsiterMsg(userName, passWord);
+    }
+
+    public void OnClickQuitBtn()
+    {
+        Debug.Log("UILogin OnClickQuitBtn ");
+        UnityEngine.Application.Quit();
     }
 
     private void NetWorkListerer()

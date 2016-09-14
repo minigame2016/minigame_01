@@ -97,7 +97,7 @@ public class NetWork {
         }
         else
         {
-            _isRegisterFailedCall = true;
+            _isRegisterSuccessCall = true;
         }
         
     }
@@ -109,6 +109,8 @@ public class NetWork {
         if (MainSystem.Instance.isOpenNetWork)
         {
             string userName = LoginSystem.Instance._userName;
+            Debug.Log("NetWork SendGetRankListMsgCS " + userName);
+
             AVObject gameScore = new AVObject("GameScore");
             AVQuery<AVObject> query = AVObject.GetQuery("GameScore");
             query = query.WhereContains("playerName", userName).OrderByDescending("score");

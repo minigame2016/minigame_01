@@ -27,6 +27,8 @@ public class UIGameItemCreate : MonoBehaviour
     private float _ramCurTime = 0.0f;
     private float createIntervalTime = 2.0f;
 
+    private int randomCounter = 1;
+
 	// Use this for initialization
 	void Start () {
         _curTime = Time.time;
@@ -45,21 +47,38 @@ public class UIGameItemCreate : MonoBehaviour
             if (Time.time - _curTime >= createIntervalTime)
             {   
                 //随机生成
-                CreateItem();
+                if (randomCounter > 3)//三个以内不能相同
+                {
+                    randomCounter = 1;
+                }
+                CreateItem(randomCounter);
+                randomCounter++;
                 _curTime = Time.time;
             }
         }
         
 	}
 
-    public void CreateItem()
+    public void CreateItem(int randomCounter)
     {   
         //随机出创建item的X坐标
         float itemXCoordinate = Random.Range(-250, 250);//-160~160
 
         //随机出创建哪个item
-        int createWhichItem = Random.Range(1, 15);//先做8个,预计15个
-        //int createWhichItem = 1;//先做8个,预计15个
+        int createWhichItem = 0;
+        if (randomCounter == 1)//1-5随机
+        {
+            createWhichItem = Random.Range(1, 5);
+        }
+        if (randomCounter == 2)
+        {
+            createWhichItem = Random.Range(6, 10);
+        }
+        if (randomCounter == 3)
+        {
+            createWhichItem = Random.Range(11, 15);
+        }
+        //createWhichItem = 1;//先做8个,预计15个
 
         if (createWhichItem == 1)
         {

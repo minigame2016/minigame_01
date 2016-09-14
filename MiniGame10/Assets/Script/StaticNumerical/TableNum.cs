@@ -21,4 +21,6 @@ public class TableNum {
     public static float UpSpeedScale_3 = 1.6f;//速度增加倍数
     public static float UpSpeedScale_4 = 1.2f;//速度增加倍数
     public static float UpSpeedScale_5 = 1f;//速度增加倍数
+
+    public static float BreakDelayTime = 0.5f;//点击消除延迟音效
 }

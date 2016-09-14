@@ -3,6 +3,11 @@ using System.Collections;
 
 public class UIGame : MonoBehaviour {
 
+    public AudioClip _begin;
+    public AudioClip _anniu;
+    public AudioClip _gameover;
+    private AudioSource _audioSource;
+
     public GameObject _pausePanel;
     public GameObject _gameOverPanel;
     
@@ -17,7 +22,9 @@ public class UIGame : MonoBehaviour {
         GameSystem.Instance.ResetGameMessage();
     }
 	void Start () {
-        
+        _audioSource = this.GetComponent<AudioSource>();
+        _audioSource.PlayOneShot(_begin);
+        InitGameHeader();
 	}
 	
 	void Update () {
@@ -26,7 +33,7 @@ public class UIGame : MonoBehaviour {
             //根据总分加快进度
             SetGameSpeed();
 
-            if (!GameSystem.Instance.isGameGoOn)
+            if ((!GameSystem.Instance.isGameGoOn))
             {
                 //游戏失败，弹出结束界面，上报数据
                 GoInGameOver();
@@ -45,6 +52,9 @@ public class UIGame : MonoBehaviour {
 
     public void GoInGameOver()
     {
+        _audioSource.PlayOneShot(_gameover);
+
+        GameSystem.Instance.isPauseState = true;
         GameSystem.Instance.isGameGoOn = true;
         _gameOverPanel.SetActive(true);
         _resultPanelGrade.text = GameSystem.Instance.totalGrade.ToString();
@@ -53,6 +63,8 @@ public class UIGame : MonoBehaviour {
 
     public void OnClickPauseBtn()
     {
+        _audioSource.PlayOneShot(_anniu);
+
         _pausePanel.SetActive(true);
 
         //暂停游戏等操作
@@ -61,6 +73,8 @@ public class UIGame : MonoBehaviour {
 
     public void OnClickReturnGameBtn()
     {
+        _audioSource.PlayOneShot(_anniu);
+
         _pausePanel.SetActive(false);
 
         //继续游戏等操作
@@ -83,6 +97,21 @@ public class UIGame : MonoBehaviour {
         Application.LoadLevel("MainScene");
         GameSystem.Instance.PlayerClickItemList.Clear();
         Time.timeScale = 1;
+    }
+
+    public void InitGameHeader()
+    {
+        //初始化上方列表，随机三个填上，1-5随机，6-9随机，10-15随机
+        int first = Random.Range(1, 5);
+        int second = Random.Range(6, 9);
+        int third = Random.Range(10, 15);
+        string firstHeader = "100" + first.ToString() + "(Clone)";
+        string secondHeader = "100" + second.ToString() + "(Clone)";
+        string thirdHeader = "10" + third.ToString() + "(Clone)";
+        GameSystem.Instance.PlayerClickItemList.Add(firstHeader);
+        GameSystem.Instance.PlayerClickItemList.Add(secondHeader);
+        GameSystem.Instance.PlayerClickItemList.Add(thirdHeader);
+        GameEventSystem.rootEventDispatcher.FireSynchorEvent(MiniGameEvent.UPDATE_HEADER, null, null);
     }
 
     public void SetGameSpeed()

@@ -3,6 +3,10 @@ using System.Collections;
 
 public class Item_1006 : MonoBehaviour
 {
+    public AudioClip _break;
+    private AudioSource _audioSource;
+    public delegate void AudioCallBack();
+
     public GameObject _panel_prefab;
 
     private Transform _transform;
@@ -10,6 +14,7 @@ public class Item_1006 : MonoBehaviour
 	// Use this for initialization
 	void Start () {
         _transform = this.transform;
+        _audioSource = this.GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -22,6 +27,18 @@ public class Item_1006 : MonoBehaviour
 
         ArriveDeadLineOrNot();
 	}
+
+    public void PlayClipData(AudioCallBack callback)
+    {
+        _audioSource.PlayOneShot(_break);
+        StartCoroutine(DelayedCallback(TableNum.BreakDelayTime, callback));
+    }
+
+    private IEnumerator DelayedCallback(float time, AudioCallBack callback)
+    {
+        yield return new WaitForSeconds(time);
+        callback();
+    }
 
     private void ArriveDeadLineOrNot()
     {
@@ -43,6 +60,11 @@ public class Item_1006 : MonoBehaviour
     }
 
     public void OnClickItem()
+    {
+        PlayClipData(OnClickItemCallback);
+    }
+
+    private void OnClickItemCallback()
     {
         string itemName = _panel_prefab.name;
         GameSystem.Instance.AddPlayerClickItemList(itemName);
