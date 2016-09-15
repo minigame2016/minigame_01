@@ -68,92 +68,92 @@ public class UIGameItemCreate : MonoBehaviour
         int createWhichItem = 0;
         if (randomCounter == 1)//1-5随机
         {
-            createWhichItem = Random.Range(1, 5);
+            createWhichItem = Random.Range(1, 6);
         }
         if (randomCounter == 2)
         {
-            createWhichItem = Random.Range(6, 10);
+            createWhichItem = Random.Range(6, 11);
         }
         if (randomCounter == 3)
         {
-            createWhichItem = Random.Range(11, 15);
+            createWhichItem = Random.Range(11, 16);
         }
         //createWhichItem = 1;//先做8个,预计15个
 
         if (createWhichItem == 1)
         {
             GameObject panel = NGUITools.AddChild(_panelRoot, _item_1001);
-            panel.transform.localPosition = new Vector3(-itemXCoordinate, 460, 0);
+            panel.transform.localPosition = new Vector3(-itemXCoordinate, 450, 0);
         }
         if (createWhichItem == 2)
         {
             GameObject panel = NGUITools.AddChild(_panelRoot, _item_1002);
-            panel.transform.localPosition = new Vector3(itemXCoordinate, 460, 0);
+            panel.transform.localPosition = new Vector3(itemXCoordinate, 450, 0);
         }
         if (createWhichItem == 3)
         {
             GameObject panel = NGUITools.AddChild(_panelRoot, _item_1003);
-            panel.transform.localPosition = new Vector3(itemXCoordinate, 460, 0);
+            panel.transform.localPosition = new Vector3(itemXCoordinate, 450, 0);
         }
         if (createWhichItem == 4)
         {
             GameObject panel = NGUITools.AddChild(_panelRoot, _item_1004);
-            panel.transform.localPosition = new Vector3(itemXCoordinate, 460, 0);
+            panel.transform.localPosition = new Vector3(itemXCoordinate, 450, 0);
         }
         if (createWhichItem == 5)
         {
             GameObject panel = NGUITools.AddChild(_panelRoot, _item_1005);
-            panel.transform.localPosition = new Vector3(itemXCoordinate, 460, 0);
+            panel.transform.localPosition = new Vector3(itemXCoordinate, 450, 0);
         }
         if (createWhichItem == 6)
         {
             GameObject panel = NGUITools.AddChild(_panelRoot, _item_1006);
-            panel.transform.localPosition = new Vector3(itemXCoordinate, 460, 0);
+            panel.transform.localPosition = new Vector3(itemXCoordinate, 450, 0);
         }
         if (createWhichItem == 7)
         {
             GameObject panel = NGUITools.AddChild(_panelRoot, _item_1007);
-            panel.transform.localPosition = new Vector3(itemXCoordinate, 460, 0);
+            panel.transform.localPosition = new Vector3(itemXCoordinate, 450, 0);
         }
         if (createWhichItem == 8)
         {
             GameObject panel = NGUITools.AddChild(_panelRoot, _item_1008);
-            panel.transform.localPosition = new Vector3(itemXCoordinate, 460, 0);
+            panel.transform.localPosition = new Vector3(itemXCoordinate, 450, 0);
         }
         if (createWhichItem == 9)
         {
             GameObject panel = NGUITools.AddChild(_panelRoot, _item_1009);
-            panel.transform.localPosition = new Vector3(itemXCoordinate, 460, 0);
+            panel.transform.localPosition = new Vector3(itemXCoordinate, 450, 0);
         }
         if (createWhichItem == 10)
         {
             GameObject panel = NGUITools.AddChild(_panelRoot, _item_1010);
-            panel.transform.localPosition = new Vector3(itemXCoordinate, 460, 0);
+            panel.transform.localPosition = new Vector3(itemXCoordinate, 450, 0);
         }
         if (createWhichItem == 11)
         {
             GameObject panel = NGUITools.AddChild(_panelRoot, _item_1011);
-            panel.transform.localPosition = new Vector3(itemXCoordinate, 460, 0);
+            panel.transform.localPosition = new Vector3(itemXCoordinate, 450, 0);
         }
         if (createWhichItem == 12)
         {
             GameObject panel = NGUITools.AddChild(_panelRoot, _item_1012);
-            panel.transform.localPosition = new Vector3(itemXCoordinate, 460, 0);
+            panel.transform.localPosition = new Vector3(itemXCoordinate, 450, 0);
         }
         if (createWhichItem == 13)
         {
             GameObject panel = NGUITools.AddChild(_panelRoot, _item_1013);
-            panel.transform.localPosition = new Vector3(itemXCoordinate, 460, 0);
+            panel.transform.localPosition = new Vector3(itemXCoordinate, 450, 0);
         }
         if (createWhichItem == 14)
         {
             GameObject panel = NGUITools.AddChild(_panelRoot, _item_1014);
-            panel.transform.localPosition = new Vector3(itemXCoordinate, 460, 0);
+            panel.transform.localPosition = new Vector3(itemXCoordinate, 450, 0);
         }
         if (createWhichItem == 15)
         {
             GameObject panel = NGUITools.AddChild(_panelRoot, _item_1015);
-            panel.transform.localPosition = new Vector3(itemXCoordinate, 460, 0);
+            panel.transform.localPosition = new Vector3(itemXCoordinate, 450, 0);
         }
         
     }
