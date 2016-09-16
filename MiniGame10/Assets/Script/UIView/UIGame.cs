@@ -116,30 +116,6 @@ public class UIGame : MonoBehaviour {
 
     public void SetGameSpeed()
     {
-        if (GameSystem.Instance.totalGrade >= TableNum.UpSpeedGradeNode_9)
-        {
-            Time.timeScale = TableNum.UpSpeedScale_6;
-            return;
-        }
-
-        if (GameSystem.Instance.totalGrade >= TableNum.UpSpeedGradeNode_8)
-        {
-            Time.timeScale = TableNum.UpSpeedScale_3;
-            return;
-        }
-
-        if (GameSystem.Instance.totalGrade >= TableNum.UpSpeedGradeNode_7)
-        {
-            Time.timeScale = TableNum.UpSpeedScale_2;
-            return;
-        }
-
-        if (GameSystem.Instance.totalGrade >= TableNum.UpSpeedGradeNode_6)
-        {
-            Time.timeScale = TableNum.UpSpeedScale_1;
-            return;
-        }
-
         if (GameSystem.Instance.totalGrade >= TableNum.UpSpeedGradeNode_5)
         {
             Time.timeScale = TableNum.UpSpeedScale_5;
