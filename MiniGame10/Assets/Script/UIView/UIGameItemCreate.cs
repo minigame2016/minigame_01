@@ -28,26 +28,30 @@ public class UIGameItemCreate : MonoBehaviour
     private float createIntervalTime = 2.0f;
 
     private int randomCounter = 1;
+    private int randomXLbs = 1;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         _curTime = Time.time;
         _ramCurTime = Time.time;
-	}
-    
-	// Update is called once per frame
-	void Update () {
-        if(!GameSystem.Instance.isPauseState)
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (!GameSystem.Instance.isPauseState)
         {
             if (Time.time - _ramCurTime > 3f)
             {
-                createIntervalTime = Random.Range(2, 4);
+                createIntervalTime = Random.Range(1, 3);
                 _ramCurTime = Time.time;
             }
+
             if (Time.time - _curTime >= createIntervalTime)
-            {   
+            {
                 //随机生成
-                if (randomCounter > 3)//三个以内不能相同
+                if (randomCounter > GameSystem.Instance.ramCount)//三个以内不能相同
                 {
                     randomCounter = 1;
                 }
@@ -56,13 +60,18 @@ public class UIGameItemCreate : MonoBehaviour
                 _curTime = Time.time;
             }
         }
-        
-	}
+
+    }
 
     public void CreateItem(int randomCounter)
-    {   
+    {
         //随机出创建item的X坐标
-        float itemXCoordinate = Random.Range(-250, 250);//-160~160
+        if (randomXLbs > 2)//三个以内不能相同
+        {
+            randomXLbs = 1;
+        }
+        float itemXCoordinate = ramItemXCoordinate(randomXLbs);
+        randomXLbs++; 
 
         //随机出创建哪个item
         int createWhichItem = 0;
@@ -155,6 +164,49 @@ public class UIGameItemCreate : MonoBehaviour
             GameObject panel = NGUITools.AddChild(_panelRoot, _item_1015);
             panel.transform.localPosition = new Vector3(itemXCoordinate, 450, 0);
         }
+
+    }
+
+    private float ramItemXCoordinate(int randomXLbs)
+    {
+        float itemXCoordinate = 0;
+        int var = 0;
+        if (randomXLbs == 1)
+        {
+            var = Random.Range(1, 5);
+        }
+        else if (randomXLbs == 2)
+        {
+            var = Random.Range(5, 8);
+        }
         
+        switch (var)
+        {
+            case 1:
+                itemXCoordinate = -260f;
+                break;
+            case 2:
+                itemXCoordinate = -180f;
+                break;
+            case 3:
+                itemXCoordinate = -100f;
+                break;
+            case 4:
+                itemXCoordinate = -20f;
+                break;
+            case 5:
+                itemXCoordinate = 60f;
+                break;
+            case 6:
+                itemXCoordinate = 140f;
+                break;
+            case 7:
+                itemXCoordinate = 230f;
+                break;
+            default:
+                itemXCoordinate = 220f;
+                break;
+        }
+        return itemXCoordinate;
     }
 }

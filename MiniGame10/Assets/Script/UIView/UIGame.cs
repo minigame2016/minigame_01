@@ -127,6 +127,7 @@ public class UIGame : MonoBehaviour {
             Time.timeScale = TableNum.UpSpeedScale_4;
             GameSystem.Instance.NowPlayerUpItemNum = TableNum.PlayerUpItemNum_3;
             GameSystem.Instance.NowGradeWeights = TableNum.GradeWeights_3;
+            //GameSystem.Instance.ramCount = TableNum.RamdomCounter_3;
             return;
         }
 
@@ -141,6 +142,7 @@ public class UIGame : MonoBehaviour {
             Time.timeScale = TableNum.UpSpeedScale_2;
             GameSystem.Instance.NowPlayerUpItemNum = TableNum.PlayerUpItemNum_2;
             GameSystem.Instance.NowGradeWeights = TableNum.GradeWeights_2;
+            GameSystem.Instance.ramCount = TableNum.RamdomCounter_2;
             return;
         }
 

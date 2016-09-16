@@ -23,4 +23,8 @@ public class TableNum {
     public static float UpSpeedScale_5 = 1f;//速度增加倍数
 
     public static float BreakDelayTime = 0.5f;//点击消除延迟音效
+
+    public static int RamdomCounter_1 = 3;//三个以内没有重复
+    public static int RamdomCounter_2 = 4;//三个以内没有重复
+    public static int RamdomCounter_3 = 5;//三个以内没有重复
 }

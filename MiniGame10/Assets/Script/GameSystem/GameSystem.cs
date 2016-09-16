@@ -34,6 +34,8 @@ public class GameSystem{
 
     public int NowPlayerUpItemNum = TableNum.PlayerUpItemNum_1;
     public int NowGradeWeights = TableNum.GradeWeights_1;
+
+    public int ramCount = TableNum.RamdomCounter_1;
     
 
     #endregion
@@ -78,6 +80,8 @@ public class GameSystem{
 
         GameSystem.Instance.NowPlayerUpItemNum = TableNum.PlayerUpItemNum_1;
         GameSystem.Instance.NowGradeWeights = TableNum.GradeWeights_1;
+
+        GameSystem.Instance.ramCount = TableNum.RamdomCounter_1;
     }
 
     public void SendResult(int totalGrade)

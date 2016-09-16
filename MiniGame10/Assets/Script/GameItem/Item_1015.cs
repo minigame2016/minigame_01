@@ -11,10 +11,13 @@ public class Item_1015 : MonoBehaviour
 
     private Transform _transform;
 
+    private Animator _anim;
+
 	// Use this for initialization
 	void Start () {
         _transform = this.transform;
         _audioSource = this.GetComponent<AudioSource>();
+        _anim = this.GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -61,6 +64,7 @@ public class Item_1015 : MonoBehaviour
 
     public void OnClickItem()
     {
+        _anim.SetBool("isBreak", true);
         PlayClipData(OnClickItemCallback);
     }
 
