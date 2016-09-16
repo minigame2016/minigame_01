@@ -15,12 +15,17 @@ public class TableNum {
     public static int UpSpeedGradeNode_3 = 3000;//达到多少分增加速度
     public static int UpSpeedGradeNode_4 = 4000;//达到多少分增加速度   同时增加框5
     public static int UpSpeedGradeNode_5 = 5000;//达到多少分增加速度
+    public static int UpSpeedGradeNode_6 = 6000;//达到多少分增加速度，速度UpSpeedScale_1
+    public static int UpSpeedGradeNode_7 = 7000;//达到多少分增加速度，速度UpSpeedScale_2
+    public static int UpSpeedGradeNode_8 = 8000;//达到多少分增加速度，速度UpSpeedScale_3
+    public static int UpSpeedGradeNode_9 = 9000;//达到多少分增加速度，速度UpSpeedScale_6
 
     public static float UpSpeedScale_1 = 1.2f;//速度增加倍数
     public static float UpSpeedScale_2 = 1.4f;//速度增加倍数
     public static float UpSpeedScale_3 = 1.6f;//速度增加倍数
     public static float UpSpeedScale_4 = 1.2f;//速度增加倍数
     public static float UpSpeedScale_5 = 1f;//速度增加倍数
+    public static float UpSpeedScale_6 = 1.8f;//速度增加倍数
 
     public static float BreakDelayTime = 0.5f;//点击消除延迟音效
 
