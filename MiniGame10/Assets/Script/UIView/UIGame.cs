@@ -16,6 +16,10 @@ public class UIGame : MonoBehaviour {
     public UILabel _grande;
     public UILabel _resultPanelGrade;
 
+    private Animator _anim;
+
+    public UITexture _hpBar;
+
     void Awake()
     {
         //进行游戏初始化，所有数据进入初始状态
@@ -24,6 +28,7 @@ public class UIGame : MonoBehaviour {
 	void Start () {
         _audioSource = this.GetComponent<AudioSource>();
         _audioSource.PlayOneShot(_begin);
+        _anim = this.GetComponent<Animator>();
         InitGameHeader();
 	}
 	
@@ -31,16 +36,28 @@ public class UIGame : MonoBehaviour {
         if(!GameSystem.Instance.isPauseState)//非暂停状态下
         {
             //根据总分加快进度
+            if (GameSystem.Instance.totalGrade + TableNum.GradeWeights_1 >= TableNum.UpSpeedGradeNode_2)
+            {
+                _anim.SetBool("isShrink", true);
+            }
+            if (GameSystem.Instance.totalGrade + TableNum.GradeWeights_2 >= TableNum.UpSpeedGradeNode_4)
+            {
+                _anim.SetBool("isShrinkAgain", true);
+            }
+
             SetGameSpeed();
 
             if ((!GameSystem.Instance.isGameGoOn))
             {
                 //游戏失败，弹出结束界面，上报数据
+                _hpBar.fillAmount = 0f;
                 GoInGameOver();
                 GameSystem.Instance.SendResult(GameSystem.Instance.totalGrade);
 
             }
-            _grande.text = "分数" + GameSystem.Instance.totalGrade.ToString();
+
+            SetHpBarFillAmount();
+            _grande.text = "血量 " + GameSystem.Instance.Hp + "分数" + GameSystem.Instance.totalGrade.ToString();
         }
 	}
 
@@ -99,6 +116,30 @@ public class UIGame : MonoBehaviour {
         Time.timeScale = 1;
     }
 
+    public void SetHpBarFillAmount()
+    {
+        if (GameSystem.Instance.Hp == 3)
+        {
+            _hpBar.fillAmount = 1.0f;
+        }
+        else if (GameSystem.Instance.Hp == 2)
+        {
+            _hpBar.fillAmount = 0.85f;
+        }
+        else if (GameSystem.Instance.Hp == 1)
+        {
+            _hpBar.fillAmount = 0.75f;
+        }
+        else if (GameSystem.Instance.Hp == 0)
+        {
+            _hpBar.fillAmount = 0f;
+        }
+        else
+        {
+            _hpBar.fillAmount = 0.75f;
+        }
+    }
+
     public void InitGameHeader()
     {
         //初始化上方列表，随机三个填上，1-5随机，6-9随机，10-15随机
@@ -115,7 +156,37 @@ public class UIGame : MonoBehaviour {
     }
 
     public void SetGameSpeed()
-    {   
+    {
+        if (GameSystem.Instance.totalGrade >= TableNum.UpSpeedGradeNode_14)
+        {
+            Time.timeScale = TableNum.UpSpeedScale_11;
+            return;
+        }
+
+        if (GameSystem.Instance.totalGrade >= TableNum.UpSpeedGradeNode_13)
+        {
+            Time.timeScale = TableNum.UpSpeedScale_10;
+            return;
+        }
+
+        if (GameSystem.Instance.totalGrade >= TableNum.UpSpeedGradeNode_12)
+        {
+            Time.timeScale = TableNum.UpSpeedScale_9;
+            return;
+        }
+
+        if (GameSystem.Instance.totalGrade >= TableNum.UpSpeedGradeNode_11)
+        {
+            Time.timeScale = TableNum.UpSpeedScale_8;
+            return;
+        }
+
+        if (GameSystem.Instance.totalGrade >= TableNum.UpSpeedGradeNode_10)
+        {
+            Time.timeScale = TableNum.UpSpeedScale_7;
+            return;
+        }
+
         if (GameSystem.Instance.totalGrade >= TableNum.UpSpeedGradeNode_9)
         {
             Time.timeScale = TableNum.UpSpeedScale_6;

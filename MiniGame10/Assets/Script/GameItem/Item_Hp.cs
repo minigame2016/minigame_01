@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Item_1007 : MonoBehaviour
+public class Item_Hp : MonoBehaviour
 {
     public AudioClip _break;
     private AudioSource _audioSource;
@@ -23,11 +23,11 @@ public class Item_1007 : MonoBehaviour
 	// Update is called once per frame
 	void Update () {
 	    //物体动
-        if (!GameSystem.Instance.isPauseState)
+        if(!GameSystem.Instance.isPauseState)
         {
             UpdateMove();
         }
-
+        
         ArriveDeadLineOrNot();
 	}
 
@@ -48,35 +48,29 @@ public class Item_1007 : MonoBehaviour
         if (this.transform.position.y < TableNum.DeadLine)//飘到屏幕下方了
         {
             NGUITools.Destroy(_panel_prefab);
-            Debug.Log("Item_1007 ArriveDeadLineOrNot Dead");
-            GameSystem.Instance.Hp = GameSystem.Instance.Hp - 1;
-            if (GameSystem.Instance.Hp == 0)
-            {
-                GameSystem.Instance.isGameGoOn = false;
-            }
+            Debug.Log("Item_Hp ArriveDeadLineOrNot Dead");
         }
     }
 
     private void UpdateMove()
     {
         // 左右移动
-        float rx = Mathf.Sin(Time.time) * Time.deltaTime * (float)GameSystem.Instance.Item_1007_H_Speed;
+        float rx = Mathf.Sin(Time.time) * Time.deltaTime * (float)0;
 
         // 向下运动
-        _transform.Translate(new Vector3(rx, (-(float)GameSystem.Instance.Item_1007_V_Speed * Time.deltaTime)), 0);
+        _transform.Translate(new Vector3(rx, (-(float)TableNum.HpSpeed * Time.deltaTime)), 0);
     }
 
     public void OnClickItem()
-    {
+    {   
         _anim.SetBool("isBreak", true);
         PlayClipData(OnClickItemCallback);
     }
 
     private void OnClickItemCallback()
     {
-        string itemName = _panel_prefab.name;
-        GameSystem.Instance.AddPlayerClickItemList(itemName);
-
+        Debug.Log("Item_Hp OnClickItemCallback");
+        GameSystem.Instance.Hp = GameSystem.Instance.Hp + 1;
         NGUITools.Destroy(_panel_prefab);
     }
 }

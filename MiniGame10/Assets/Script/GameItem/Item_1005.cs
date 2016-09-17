@@ -45,11 +45,15 @@ public class Item_1005 : MonoBehaviour
 
     private void ArriveDeadLineOrNot()
     {
-        if (this.transform.position.y < -1)//飘到屏幕下方了
+        if (this.transform.position.y < TableNum.DeadLine)//飘到屏幕下方了
         {
             NGUITools.Destroy(_panel_prefab);
             Debug.Log("Item_1005 ArriveDeadLineOrNot Dead");
-            GameSystem.Instance.isGameGoOn = false;
+            GameSystem.Instance.Hp = GameSystem.Instance.Hp - 1;
+            if (GameSystem.Instance.Hp == 0)
+            {
+                GameSystem.Instance.isGameGoOn = false;
+            }
         }
     }
 

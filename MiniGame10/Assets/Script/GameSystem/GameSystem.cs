@@ -36,6 +36,9 @@ public class GameSystem{
     public int NowGradeWeights = TableNum.GradeWeights_1;
 
     public int ramCount = TableNum.RamdomCounter_1;
+
+    public int Hp = TableNum.Hp;//血量
+    public bool isAdd = true;//是否添加进List
     
 
     #endregion
@@ -46,8 +49,13 @@ public class GameSystem{
         {
             if (PlayerClickItemList[i].Equals(itemName))
             {
-                Debug.LogWarning("GameSystem Dead!!!!!!  " + itemName);
-                isGameGoOn = false;
+                Debug.LogWarning("GameSystem Hp-1  " + itemName);
+                Hp = Hp - 1;
+                isAdd = false;
+                if (Hp == 0)
+                {
+                    isGameGoOn = false;
+                }  
             }
         }
 
@@ -55,15 +63,17 @@ public class GameSystem{
         {
             totalGrade = totalGrade + NowGradeWeights;
         }
-        
-        if (PlayerClickItemList.Count == NowPlayerUpItemNum)
+        if (isAdd)
         {
-            PlayerClickItemList.RemoveAt(0);
+            if (PlayerClickItemList.Count == NowPlayerUpItemNum)
+            {
+                PlayerClickItemList.RemoveAt(0);
+            }
+            PlayerClickItemList.Add(itemName);
         }
-
         
-        PlayerClickItemList.Add(itemName);
-
+        isAdd = true;
+        
         //通知更新Header
         GameEventSystem.rootEventDispatcher.FireSynchorEvent(MiniGameEvent.UPDATE_HEADER, null, null);
 
@@ -82,6 +92,9 @@ public class GameSystem{
         GameSystem.Instance.NowGradeWeights = TableNum.GradeWeights_1;
 
         GameSystem.Instance.ramCount = TableNum.RamdomCounter_1;
+
+        GameSystem.Instance.Hp = TableNum.Hp;
+        GameSystem.Instance.isAdd = true;
     }
 
     public void SendResult(int totalGrade)
