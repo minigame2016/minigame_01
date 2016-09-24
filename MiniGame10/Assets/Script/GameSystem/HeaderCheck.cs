@@ -17,74 +17,74 @@ public class HeaderCheck : MonoBehaviour, IEventListener
         {
             string item1 = GameSystem.Instance.PlayerClickItemList[0].ToString();
             item1 = item1.Substring(0, 4);
-            _itemTex1.mainTexture = Resources.Load("Image/TempResource/" + item1) as Texture2D;
+            _itemTex1.mainTexture = Resources.Load("Image/Virus/" + item1) as Texture2D;
         }
         if (GameSystem.Instance.PlayerClickItemList.Count == 2)
         {
             string item1 = GameSystem.Instance.PlayerClickItemList[0].ToString();
             item1 = item1.Substring(0, 4);
-            _itemTex1.mainTexture = Resources.Load("Image/TempResource/" + item1) as Texture2D;
+            _itemTex1.mainTexture = Resources.Load("Image/Virus/" + item1) as Texture2D;
 
             string item2 = GameSystem.Instance.PlayerClickItemList[1].ToString();
             item2 = item2.Substring(0, 4);
-            _itemTex2.mainTexture = Resources.Load("Image/TempResource/" + item2) as Texture2D;
+            _itemTex2.mainTexture = Resources.Load("Image/Virus/" + item2) as Texture2D;
         }
 
         if (GameSystem.Instance.PlayerClickItemList.Count == 3)
         {
             string item1 = GameSystem.Instance.PlayerClickItemList[0].ToString();
             item1 = item1.Substring(0, 4);
-            _itemTex1.mainTexture = Resources.Load("Image/TempResource/" + item1) as Texture2D;
+            _itemTex1.mainTexture = Resources.Load("Image/Virus/" + item1) as Texture2D;
 
             string item2 = GameSystem.Instance.PlayerClickItemList[1].ToString();
             item2 = item2.Substring(0, 4);
-            _itemTex2.mainTexture = Resources.Load("Image/TempResource/" + item2) as Texture2D;
+            _itemTex2.mainTexture = Resources.Load("Image/Virus/" + item2) as Texture2D;
 
             string item3 = GameSystem.Instance.PlayerClickItemList[2].ToString();
             item3 = item3.Substring(0, 4);
-            _itemTex3.mainTexture = Resources.Load("Image/TempResource/" + item3) as Texture2D;
+            _itemTex3.mainTexture = Resources.Load("Image/Virus/" + item3) as Texture2D;
         }
 
         if (GameSystem.Instance.PlayerClickItemList.Count == 4)
         {
             string item1 = GameSystem.Instance.PlayerClickItemList[0].ToString();
             item1 = item1.Substring(0, 4);
-            _itemTex1.mainTexture = Resources.Load("Image/TempResource/" + item1) as Texture2D;
+            _itemTex1.mainTexture = Resources.Load("Image/Virus/" + item1) as Texture2D;
 
             string item2 = GameSystem.Instance.PlayerClickItemList[1].ToString();
             item2 = item2.Substring(0, 4);
-            _itemTex2.mainTexture = Resources.Load("Image/TempResource/" + item2) as Texture2D;
+            _itemTex2.mainTexture = Resources.Load("Image/Virus/" + item2) as Texture2D;
 
             string item3 = GameSystem.Instance.PlayerClickItemList[2].ToString();
             item3 = item3.Substring(0, 4);
-            _itemTex3.mainTexture = Resources.Load("Image/TempResource/" + item3) as Texture2D;
+            _itemTex3.mainTexture = Resources.Load("Image/Virus/" + item3) as Texture2D;
 
             string item4 = GameSystem.Instance.PlayerClickItemList[3].ToString();
             item4 = item4.Substring(0, 4);
-            _itemTex4.mainTexture = Resources.Load("Image/TempResource/" + item4) as Texture2D;
+            _itemTex4.mainTexture = Resources.Load("Image/Virus/" + item4) as Texture2D;
         }
 
         if (GameSystem.Instance.PlayerClickItemList.Count == 5)
         {
             string item1 = GameSystem.Instance.PlayerClickItemList[0].ToString();
             item1 = item1.Substring(0, 4);
-            _itemTex1.mainTexture = Resources.Load("Image/TempResource/" + item1) as Texture2D;
+            _itemTex1.mainTexture = Resources.Load("Image/Virus/" + item1) as Texture2D;
 
             string item2 = GameSystem.Instance.PlayerClickItemList[1].ToString();
             item2 = item2.Substring(0, 4);
-            _itemTex2.mainTexture = Resources.Load("Image/TempResource/" + item2) as Texture2D;
+            _itemTex2.mainTexture = Resources.Load("Image/Virus/" + item2) as Texture2D;
 
             string item3 = GameSystem.Instance.PlayerClickItemList[2].ToString();
             item3 = item3.Substring(0, 4);
-            _itemTex3.mainTexture = Resources.Load("Image/TempResource/" + item3) as Texture2D;
+            _itemTex3.mainTexture = Resources.Load("Image/Virus/" + item3) as Texture2D;
 
             string item4 = GameSystem.Instance.PlayerClickItemList[3].ToString();
             item4 = item4.Substring(0, 4);
-            _itemTex4.mainTexture = Resources.Load("Image/TempResource/" + item4) as Texture2D;
+            _itemTex4.mainTexture = Resources.Load("Image/Virus/" + item4) as Texture2D;
 
             string item5 = GameSystem.Instance.PlayerClickItemList[4].ToString();
             item5 = item5.Substring(0, 4);
-            _itemTex5.mainTexture = Resources.Load("Image/TempResource/" + item5) as Texture2D;
+            _itemTex5.mainTexture = Resources.Load("Image/Virus/" + item5) as Texture2D;
         }
 
         #endregion

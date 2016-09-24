@@ -45,7 +45,7 @@ public class TableNum {
 
     public static double DeadLine = -0.85;
 
-    public static float HpSpeed = 0.6f;//血包下降速度
+    public static float HpSpeed = 0.5f;//血包下降速度
     public static int HpCreatTime = 30;//多场时间产生血包
 
     public static int Hp = 3;

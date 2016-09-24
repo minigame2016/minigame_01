@@ -51,8 +51,17 @@ public class UILogin : MonoBehaviour, IEventListener {
 
     private void OnClickLoginBtnCallback()
     {
-        string userName = _userName.value;
-        string passWord = _passWord.value;
+        string userName = null;
+        string passWord = null;
+        if (_userName.value != "")
+        {   
+            
+            userName = _userName.value;
+        }
+        if (_passWord.value != "")
+        {
+            passWord = _passWord.value;
+        }
 
         LoginSystem.Instance._userName = userName;
         LoginSystem.Instance._passWord = passWord;
@@ -66,8 +75,17 @@ public class UILogin : MonoBehaviour, IEventListener {
     {
         _audioSource.PlayOneShot(_anniu);
 
-        string userName = _userName.value;
-        string passWord = _passWord.value;
+        string userName = null;
+        string passWord = null;
+        if (_userName.value != "")
+        {
+
+            userName = _userName.value;
+        }
+        if (_passWord.value != "")
+        {
+            passWord = _passWord.value;
+        }
 
         Debug.Log("UILogin OnClickRegisterBtn " + userName + " " + passWord);
 
@@ -90,19 +108,19 @@ public class UILogin : MonoBehaviour, IEventListener {
 
         if (NetWork.Instance._isLoginFailedCall)
         {
-            _tipsShow.text = "登录失败";
+            _tipsShow.text = "Tips:LoginFiled!";
             NetWork.Instance._isLoginFailedCall = false;
         }
 
         if (NetWork.Instance._isRegisterFailedCall)
         {
-            _tipsShow.text = "注册失败，重新注册";
+            _tipsShow.text = "Tips:RegistFailed! Redo!";
             NetWork.Instance._isRegisterFailedCall = false;
         }
 
         if (NetWork.Instance._isRegisterSuccessCall)
         {
-            _tipsShow.text = "注册成功，请登录";
+            _tipsShow.text = "Tips:RegistSuccess! GoOn!";
             NetWork.Instance._isRegisterSuccessCall = false;
         }
     }

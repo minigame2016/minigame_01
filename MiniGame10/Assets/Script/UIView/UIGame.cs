@@ -57,7 +57,7 @@ public class UIGame : MonoBehaviour {
             }
 
             SetHpBarFillAmount();
-            _grande.text = "血量 " + GameSystem.Instance.Hp + "分数" + GameSystem.Instance.totalGrade.ToString();
+            _grande.text = GameSystem.Instance.totalGrade.ToString();
         }
 	}
 
@@ -124,11 +124,11 @@ public class UIGame : MonoBehaviour {
         }
         else if (GameSystem.Instance.Hp == 2)
         {
-            _hpBar.fillAmount = 0.85f;
+            _hpBar.fillAmount = 0.65f;
         }
         else if (GameSystem.Instance.Hp == 1)
         {
-            _hpBar.fillAmount = 0.75f;
+            _hpBar.fillAmount = 0.35f;
         }
         else if (GameSystem.Instance.Hp == 0)
         {

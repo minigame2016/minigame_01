@@ -75,25 +75,32 @@ public class NetWork {
     {
         if (MainSystem.Instance.isOpenNetWork)
         {
-            var user = new AVUser();
-            user.Username = userName;
-            user.Password = passWord;
-
-            user.SignUpAsync().ContinueWith(t =>
+            if (userName != null && passWord != null)
             {
-                if (!t.IsFaulted)
-                {
-                    Debug.Log("NetWork SendRegsiterMsgCS 注册成功");
-                    var uid = user.ObjectId;
-                    _isRegisterSuccessCall = true;
-                }
-                else
-                {
-                    Debug.Log("NetWork SendRegsiterMsgCS 注册失败");
-                    _isRegisterFailedCall = true;
-                }
+                var user = new AVUser();
+                user.Username = userName;
+                user.Password = passWord;
 
-            });
+                user.SignUpAsync().ContinueWith(t =>
+                {
+                    if (!t.IsFaulted)
+                    {
+                        Debug.Log("NetWork SendRegsiterMsgCS 注册成功");
+                        var uid = user.ObjectId;
+                        _isRegisterSuccessCall = true;
+                    }
+                    else
+                    {
+                        Debug.Log("NetWork SendRegsiterMsgCS 注册失败");
+                        _isRegisterFailedCall = true;
+                    }
+
+                });
+            }
+            else
+            {
+                _isRegisterFailedCall = true;
+            }
         }
         else
         {
