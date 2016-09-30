@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class GameSystem{
 
@@ -39,6 +40,19 @@ public class GameSystem{
 
     public int Hp = TableNum.Hp;//血量
     public bool isAdd = true;//是否添加进List
+
+    //开始时间
+    public double clickItemTime = 0;
+    public int combo = 0;
+
+    //是否点击了反道具
+    public bool isClickReverseItem = false;
+    //反道具开始生效时间
+    public float reverseCreateTime = 0.0f;
+    //反道具结束生效时间
+    public float reverseEndTime = 0.0f;
+    //反道具生效时的TImeScale
+    public float reverseCreTimeScale = 1f;
     
 
     #endregion
@@ -61,18 +75,38 @@ public class GameSystem{
 
         if (isGameGoOn)
         {
-            totalGrade = totalGrade + NowGradeWeights;
-        }
-        if (isAdd)
-        {
-            if (PlayerClickItemList.Count == NowPlayerUpItemNum)
+            if (isAdd)
             {
-                PlayerClickItemList.RemoveAt(0);
+                totalGrade = totalGrade + NowGradeWeights;
+                if (PlayerClickItemList.Count == NowPlayerUpItemNum)
+                {
+                    PlayerClickItemList.RemoveAt(0);
+                }
+                PlayerClickItemList.Add(itemName);
+
+                double clickItemTime_Now = double.Parse((DateTime.Now - DateTime.Parse("1970-1-1")).TotalSeconds.ToString());
+                if (clickItemTime_Now - clickItemTime < 1)
+                {
+                    combo++;
+                    totalGrade = totalGrade + NowGradeWeights;//双倍分数
+                }
+                else
+                {
+                    combo = 0;
+                }
+                clickItemTime = clickItemTime_Now;
             }
-            PlayerClickItemList.Add(itemName);
+            else
+            {
+                combo = 0;
+            }
+            Debug.Log("combo: " + combo);
+
+            isAdd = true;
         }
-        
-        isAdd = true;
+
+        //通知更新Combo
+        GameEventSystem.rootEventDispatcher.FireSynchorEvent(MiniGameEvent.UPDATE_COMBO, null, null);
         
         //通知更新Header
         GameEventSystem.rootEventDispatcher.FireSynchorEvent(MiniGameEvent.UPDATE_HEADER, null, null);
@@ -95,6 +129,8 @@ public class GameSystem{
 
         GameSystem.Instance.Hp = TableNum.Hp;
         GameSystem.Instance.isAdd = true;
+
+        GameSystem.instance.combo = 0;
     }
 
     public void SendResult(int totalGrade)

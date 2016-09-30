@@ -45,8 +45,18 @@ public class TableNum {
 
     public static double DeadLine = -0.85;
 
-    public static float HpSpeed = 0.5f;//血包下降速度
+    public static float HpSpeed = 0.4f;//血包下降速度
     public static int HpCreatTime = 30;//多场时间产生血包
 
     public static int Hp = 3;
+
+    public static int ScoreNode_1 = 0;
+    public static int ScoreNode_2 = 2000;
+    public static int ScoreNode_3 = 8000;
+    public static int ScoreNode_4 = 12000;
+
+    public static float ReverseSpeed = 0.1f;//反道具下降的速度
+    public static int ReverseCreateTime = 10;//多场时间产生一个反道具
+    public static int ReverseAddSpeed = 8;//反道具是速度增加多少
+    public static float ReverseAddTime = 1.5f;//反道具生效多长时间
 }

@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
-public class UIGame : MonoBehaviour {
+public class UIGame : MonoBehaviour, IEventListener
+{
 
     public AudioClip _begin;
     public AudioClip _anniu;
@@ -10,6 +12,8 @@ public class UIGame : MonoBehaviour {
 
     public GameObject _pausePanel;
     public GameObject _gameOverPanel;
+
+    public UITexture _level;
     
     public UILabel _userName;
 
@@ -19,6 +23,8 @@ public class UIGame : MonoBehaviour {
     private Animator _anim;
 
     public UITexture _hpBar;
+
+    public UILabel _comboLabel;
 
     void Awake()
     {
@@ -30,9 +36,12 @@ public class UIGame : MonoBehaviour {
         _audioSource.PlayOneShot(_begin);
         _anim = this.GetComponent<Animator>();
         InitGameHeader();
+        GameSystem.Instance.clickItemTime = double.Parse((DateTime.Now - DateTime.Parse("1970-1-1")).TotalSeconds.ToString());
+        _comboLabel.text = "x0";
 	}
 	
-	void Update () {
+	void Update () 
+    {
         if(!GameSystem.Instance.isPauseState)//非暂停状态下
         {
             //根据总分加快进度
@@ -45,8 +54,11 @@ public class UIGame : MonoBehaviour {
                 _anim.SetBool("isShrinkAgain", true);
             }
 
-            SetGameSpeed();
-
+            if(!GameSystem.Instance.isClickReverseItem)
+            {
+                SetGameSpeed();
+            }
+            
             if ((!GameSystem.Instance.isGameGoOn))
             {
                 //游戏失败，弹出结束界面，上报数据
@@ -61,10 +73,28 @@ public class UIGame : MonoBehaviour {
         }
 	}
 
-    void OnEnable()
-    {   
-        //测试带数据
-        _userName.text = LoginSystem.Instance._userName;
+    private void SetTotalLevel(int totalGrade)
+    {
+        if (totalGrade >= TableNum.ScoreNode_4)
+        {
+            _level.mainTexture = Resources.Load("Image/S") as Texture2D;
+        }
+        else if (totalGrade >= TableNum.ScoreNode_3 && totalGrade < TableNum.ScoreNode_4)
+        {
+            _level.mainTexture = Resources.Load("Image/A") as Texture2D;
+        }
+        else if (totalGrade >= TableNum.ScoreNode_2 && totalGrade < TableNum.ScoreNode_3)
+        {
+            _level.mainTexture = Resources.Load("Image/B") as Texture2D;
+        }
+        else if (totalGrade >= TableNum.ScoreNode_1 && totalGrade < TableNum.ScoreNode_2)
+        {
+            _level.mainTexture = Resources.Load("Image/C") as Texture2D;
+        }
+        else 
+        {
+            _level.mainTexture = Resources.Load("Image/C") as Texture2D;
+        }
     }
 
     public void GoInGameOver()
@@ -74,8 +104,13 @@ public class UIGame : MonoBehaviour {
         GameSystem.Instance.isPauseState = true;
         GameSystem.Instance.isGameGoOn = true;
         _gameOverPanel.SetActive(true);
+
+        //显示最终得分
         _resultPanelGrade.text = GameSystem.Instance.totalGrade.ToString();
         Time.timeScale = 0;
+
+        //显示等级 SABC
+        SetTotalLevel(GameSystem.Instance.totalGrade);
     }
 
     public void OnClickPauseBtn()
@@ -143,9 +178,9 @@ public class UIGame : MonoBehaviour {
     public void InitGameHeader()
     {
         //初始化上方列表，随机三个填上，1-5随机，6-9随机，10-15随机
-        int first = Random.Range(1, 5);
-        int second = Random.Range(6, 9);
-        int third = Random.Range(10, 15);
+        int first = UnityEngine.Random.Range(1, 5);
+        int second = UnityEngine.Random.Range(6, 9);
+        int third = UnityEngine.Random.Range(10, 15);
         string firstHeader = "100" + first.ToString() + "(Clone)";
         string secondHeader = "100" + second.ToString() + "(Clone)";
         string thirdHeader = "10" + third.ToString() + "(Clone)";
@@ -246,5 +281,52 @@ public class UIGame : MonoBehaviour {
             Time.timeScale = TableNum.UpSpeedScale_1;
             return;
         }
+    }
+
+    public void UpdateCombo()
+    {
+        int combo = GameSystem.Instance.combo;
+        _comboLabel.text = "x" + combo.ToString();
+        if (combo > 0)
+        {
+            _anim.SetTrigger("comboShake");
+        }
+    }
+
+    void OnEnable()
+    {
+        AttachEvent();
+
+        //测试带数据
+        _userName.text = LoginSystem.Instance._userName;
+    }
+    void OnDisable()
+    {
+        DetachEvent();
+    }
+
+    public bool OnFireEvent(uint key, object param1, object param2)
+    {
+        if (key == MiniGameEvent.UPDATE_COMBO)
+        {
+            UpdateCombo();
+        }
+
+        return true;
+    }
+
+    public int GetListenerPriority(uint eventKey)
+    {
+        return 0;
+    }
+
+    public void AttachEvent()
+    {
+        GameEventSystem.rootEventDispatcher.AttachListenerNow(this, MiniGameEvent.UPDATE_COMBO);
+    }
+
+    public void DetachEvent()
+    {
+        GameEventSystem.rootEventDispatcher.DetachListenerNow(this, MiniGameEvent.UPDATE_COMBO);
     }
 }

@@ -11,6 +11,8 @@ public class UILogin : MonoBehaviour, IEventListener {
 
     public UILabel _tipsShow;
 
+    public UILabel _netLabel;
+
     public delegate void AudioCallBack();
 
     void Start()
@@ -30,6 +32,14 @@ public class UILogin : MonoBehaviour, IEventListener {
     void Update()
     {
         NetWorkListerer();
+        if(MainSystem.Instance.isOpenNetWork)
+        {
+            _netLabel.text = "网络关闭";
+        }
+        else
+        {
+            _netLabel.text = "网络打开";
+        }
     }
 
     public void PlayClipData(AudioCallBack callback)
@@ -42,6 +52,19 @@ public class UILogin : MonoBehaviour, IEventListener {
     {
         yield return new WaitForSeconds(time);
         callback();
+    }
+
+    public void OnClickNetBtn()
+    {
+        Debug.Log("UILogin OnClickNetBtn ");
+        if (MainSystem.Instance.isOpenNetWork)
+        {
+            MainSystem.Instance.isOpenNetWork = false;
+        }
+        else
+        {
+            MainSystem.Instance.isOpenNetWork = true;
+        }
     }
 
     public void OnClickLoginBtn()
