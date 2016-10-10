@@ -20,24 +20,27 @@ public class UIReverseItemCreate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Time.time - _curTime > TableNum.ReverseCreateTime)
+        if (!GameSystem.Instance.isPauseState)
         {
-            CreateItem();
-            _curTime = Time.time;
-        }
-        if (GameSystem.Instance.isClickReverseItem)
-        {
-            if (Time.time - GameSystem.Instance.reverseCreateTime < GameSystem.Instance.reverseEndTime)
+            if (Time.time - _curTime > TableNum.ReverseCreateTime)
             {
-                Time.timeScale = TableNum.ReverseAddSpeed;
+                CreateItem();
+                _curTime = Time.time;
             }
-            else
+            if (GameSystem.Instance.isClickReverseItem)
             {
-                Time.timeScale = GameSystem.Instance.reverseCreTimeScale;//回复生效前的TImeScale
-                GameSystem.Instance.isClickReverseItem = false;
-                GameSystem.Instance.reverseCreateTime = 0.0f;
-                GameSystem.Instance.reverseEndTime = 0.0f;
-                GameSystem.Instance.reverseCreTimeScale = 1f;
+                if (Time.time - GameSystem.Instance.reverseCreateTime < GameSystem.Instance.reverseEndTime)
+                {
+                    Time.timeScale = TableNum.ReverseAddSpeed;
+                }
+                else
+                {
+                    Time.timeScale = GameSystem.Instance.reverseCreTimeScale;//回复生效前的TImeScale
+                    GameSystem.Instance.isClickReverseItem = false;
+                    GameSystem.Instance.reverseCreateTime = 0.0f;
+                    GameSystem.Instance.reverseEndTime = 0.0f;
+                    GameSystem.Instance.reverseCreTimeScale = 1f;
+                }
             }
         }
     }

@@ -22,10 +22,13 @@ public class UIHpItemCreate : MonoBehaviour
     {
         if(GameSystem.Instance.Hp < 3)//血量小于3才创建
         {
-            if (Time.time - _curTime > TableNum.HpCreatTime)
+            if (!GameSystem.Instance.isPauseState)
             {
-                CreateItem();
-                _curTime = Time.time;
+                if (Time.time - _curTime > TableNum.HpCreatTime)
+                {
+                    CreateItem();
+                    _curTime = Time.time;
+                }
             }
             
         }
